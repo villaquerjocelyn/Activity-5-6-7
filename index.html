@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tae</title>
+</head>
+<body>
+    <form id="parentDiv" method="post">
+        <p>
+            <label>Sibling 1 </label>
+            <input type="text" name="input1" placeholder="Fullname" class="txtInput">
+        </p>
+        <p>
+            <label>Sibling 2 </label>
+            <input type="text" name="input2" placeholder="Fullname" class="txtInput">
+        </p>
+        <p>
+            <label>Sibling 3 </label>
+            <input type="text" name="input3" placeholder="Fullname"  class="txtInput">
+        </p>  
+    </form>
+    
+    <input type="button" value="+ ADD MORE" id="btnAdd">
+    <input type="button" value="SUBMIT" id="btnSubmit">
+
+    <script src="tae.js"></script>
+
+    <script>
+        var app = $tae;
+
+        app.el("#btnAdd").on("click", function () {
+            // create container as parent div
+            var container = app.getParentId("parentDiv")
+
+            var paragraph = app.createElem("p"); // create parent paragraph
+            var label = app.createElem("label"); // create child label
+            var input = app.createElem("input"); // create child input
+
+            // set label inner html
+            app.setInnerHTML(label, "Sibling " + (app.getElemCount(container)+1) + " ");
+            // set attribute of input field
+            app.setAttr(input, {
+                    type: 'text', 
+                    placeholder: 'Fullname', 
+                    class: 'txtInput',
+                    name: 'input' + (app.getElemCount(container)+1)
+                });
+
+            // put label and input inside paragraph
+            app.appendElem(paragraph, label);
+            app.appendElem(paragraph, input);
+            // then add paragraph in container
+            app.appendElem(container, paragraph);
+
+        });
+
+        app.el("#btnSubmit").on("click", function () {
+            // alert(app.el(".txtInput").get());
+
+            var data = app.el(".txtInput").getData();
+
+            app.sendHTTPRequest(data);
+
+        });
+    </script>
+</body>
+</html>
